@@ -118,7 +118,7 @@ import {Internship} from './internship.entity';
                     <input type="text"
                             name="companyname"
                             id="companyname"
-                            [(ngModel)]="selectedInternship.company"
+                            [(ngModel)]="selectedInternship.companyName"
                             placeholder="Company name"
                             class="form-control"
                             required
