@@ -8,8 +8,5 @@ import { Component, OnInit } from '@angular/core';
     </label>
     `
 })
-export class HomeComponent implements OnInit {
-    constructor() { }
-
-    ngOnInit() { }
+export class HomeComponent {
 }

@@ -10,6 +10,7 @@ import { InternshipsComponent } from './internships.component';
 import { InternshipEntryComponent } from './internship-entry.component';
 import { AboutComponent } from './about.component';
 import {InternshipsService } from './internships.service';
+import { FilterInternships } from './search-internship.filter';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import {InternshipsService } from './internships.service';
     HomeComponent,
     InternshipsComponent,
     InternshipEntryComponent,
-    AboutComponent
+    AboutComponent,
+    FilterInternships
   ],
   imports: [
     BrowserModule,
