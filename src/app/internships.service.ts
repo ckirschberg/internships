@@ -7,7 +7,6 @@ import 'rxjs/add/operator/catch';
 
 import {Internship} from './internship.entity';
 
-//I want to be able to inject this service into other components.
 @Injectable()
 export class InternshipsService {
     private internships: Internship[];
@@ -30,13 +29,13 @@ export class InternshipsService {
           .catch(this.handleError);
     }
 
-    //clones the found internship obj.
+    // Clones the found internship obj.
     public getInternship(id: string): Internship { 
         let internship = this.internships.find(internship => internship._id === id);
         if (internship) {
             return this.copyInternshipObject(internship);
         }
-        return <Internship>{ student: {}}; //return "empty" internship obj.
+        return <Internship>{ student: {}}; // return "empty" internship obj.
     } 
 
     public createInternship(internship): Observable<Internship>  {
