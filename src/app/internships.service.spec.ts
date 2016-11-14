@@ -7,7 +7,7 @@ import { TestBed, inject, async, getTestBed } from '@angular/core/testing';
 
 import { Internship } from './internship.entity';
 
-describe('Markdown transformer service', () => {
+describe('InternshipsService', () => {
     let mockBackend: MockBackend;
 
   beforeEach(async(() => {
@@ -34,7 +34,7 @@ describe('Markdown transformer service', () => {
 
 
 
-  it('should get blogs', done => {
+  it('should get internships and set services this.internships array', done => {
     let internshipsService: InternshipsService;
 
     getTestBed().compileComponents().then(() => {
@@ -67,16 +67,12 @@ describe('Markdown transformer service', () => {
             expect(internships.length).toBeDefined();
             expect(internships.length).toEqual(1);
             expect(internships[0]._id).toEqual('11');
+            expect(internshipsService.getAllLocalInternships().length).toEqual(1);
+            expect(internshipsService.getAllLocalInternships()[0]._id).toEqual('11');
             done();
         });
     });
-  });
 
-
-  it('Should translate markdown to HTML!', 
-    inject([InternshipsService], (internshipsService) => {
-
-    expect(internshipsService).toBeDefined();
-
-  }));
+    
+    });
 });
