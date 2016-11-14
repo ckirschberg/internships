@@ -10,7 +10,7 @@ import {Internship} from './internship.entity';
 //I want to be able to inject this service into other components.
 @Injectable()
 export class InternshipsService {
-    private internships: any[];
+    private internships: Internship[];
     private url: string = "http://angular2api2.azurewebsites.net/api/internships";
 
     constructor(private http: Http) {
