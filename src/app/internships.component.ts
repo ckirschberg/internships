@@ -29,8 +29,8 @@ import {Internship} from './internship.entity';
                 "No matches"
             </div>
             <div *ngIf="internship !== -1" class="card card-block" >
-                <h3 class="card-title">{{internship.student.firstname}} {{internship.student.lastname}}</h3>
-                <p class="card-text">{{internship.company}}</p>
+                <h3 class="card-title">{{internship.student.firstname | uppercase }} {{internship.student.lastname | lowercase}}</h3>
+                <p class="card-text">{{internship.companyName}}</p>
                 <a routerLink="/internship/{{internship._id}}" class="btn btn-primary">Details</a>
             </div>
         </div>
@@ -42,20 +42,20 @@ export class InternshipsComponent implements OnInit {
 
     constructor(private internshipsService: InternshipsService) {
     }
-    
+
     ngOnInit():void {
         this.internships = this.internshipsService.getAllLocalInternships();
-        
+
         if (!this.internships) {
             this.message = "Retrieving data...";
-            
+
             this.internshipsService.getAllInternships().subscribe(
             (internships) => {
                 this.internships = internships;
                 this.message = "";
             },
-                error => this.message = error 
+                error => this.message = error
             );
         }
     }
-} 
+}
