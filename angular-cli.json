@@ -22,7 +22,9 @@
         "../node_modules/jquery/dist/jquery.js",
         "../node_modules/tether/dist/js/tether.js",
         "../node_modules/bootstrap/dist/js/bootstrap.js",
-        "../node_modules/underscore/underscore.js"
+        "../node_modules/underscore/underscore.js",
+        "../node_modules/redux/dist/redux.js",
+        "../node_modules/redux-logger/dist/index.js"
       ],
       "environments": {
         "source": "environments/environment.ts",

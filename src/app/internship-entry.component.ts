@@ -8,6 +8,11 @@ import {
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import {InternshipsService} from "./internships.service";
 import {Internship} from './internship.entity';
+import { NgRedux, select } from 'ng2-redux';
+import { Observable } from 'rxjs/Observable';
+import { InternshipActions } from './actions/internship.actions';
+import { CounterActions } from './actions/counter.actions';
+import { IAppState } from './store';
 
 @Component({
   selector: 'internship-entry',
@@ -137,6 +142,23 @@ import {Internship} from './internship.entity';
         <button type="button" routerLink="/internships" class="btn btn-secondary">Back</button>  
         <button type="submit" class="btn btn-primary" [disabled]="!internshipForm.form.valid">Save internship</button>
         <button type="button" class="btn btn-danger" (click)="deleteInternship()">Delete internship</button>
+
+        <div>
+            Clicked: {{ counter$ | async }} times
+            <button type="button" (click)="actions.saveInternship(selectedInternship)">+</button>
+            <button type="button" (click)="actions.deleteInternship(selectedInternship._id)">-</button>
+
+            <button type="button" (click)="counterActions.increment()">+</button>
+            <button type="button" (click)="counterActions.decrement()">-</button>
+            {{internships$ | async}}
+            Clicked: {{ counter$ | async }} times
+
+<!--
+            <div *ngFor="let intern of internships$ | async">
+                {{intern.initials}}
+            </div>
+-->
+        </div>
       </div>
     </div>
   </form>
@@ -145,12 +167,32 @@ import {Internship} from './internship.entity';
 export class InternshipEntryComponent implements OnInit {
     private selectedInternship: Internship;
     private errorMessage: string;
+    // private counter$: Observable<number>;
+
+    
+    @select('counter') counter$: Observable<number>;
+  
 
     ngOnInit():void {
         this.route.params.forEach((params: Params) => {
             let id = params['id'];
             this.selectedInternship = Object.assign({}, this.internshipsService.getInternship(id));
         });
+        
+        //this.counter$ = this.ngRedux.select('counter'); 
+
+        // this.actions.getInternships();
+
+
+    // Exercise the flow where you set a member on change manually instead of
+        // using async pipe.
+        // this.internships$.subscribe(state => {
+        //     this.internships = state;
+        //     console.log(this.internships);
+        // });
+
+        // console.log("in component:");
+        // console.log(this.internships);
     }
 
     deleteInternship(): void {
@@ -161,7 +203,10 @@ export class InternshipEntryComponent implements OnInit {
     }
 
   constructor(private route: ActivatedRoute, private internshipsService: InternshipsService,
-    private router: Router) {
+    private router: Router, public actions: InternshipActions, public counterActions: CounterActions,
+    private ngRedux: NgRedux<IAppState>) { //
+
+        // this.internships = store.select(state => state.internships);
   }
 
   public onSubmit():void {
