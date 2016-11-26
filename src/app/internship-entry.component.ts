@@ -11,7 +11,6 @@ import {Internship} from './internship.entity';
 import { NgRedux, select } from 'ng2-redux';
 import { Observable } from 'rxjs/Observable';
 import { InternshipActions } from './actions/internship.actions';
-import { CounterActions } from './actions/counter.actions';
 import { IAppState } from './store';
 
 @Component({
@@ -19,6 +18,10 @@ import { IAppState } from './store';
   template: `
   
   <h2>Internship</h2>
+    <div *ngIf="message$ | async" class="alert alert-danger">
+        {{ message$ | async }}
+    </div>
+
   <form class="" (ngSubmit)="onSubmit()" #internshipForm="ngForm">
 
     <div class="row">
@@ -143,21 +146,8 @@ import { IAppState } from './store';
         <button type="submit" class="btn btn-primary" [disabled]="!internshipForm.form.valid">Save internship</button>
         <button type="button" class="btn btn-danger" (click)="deleteInternship()">Delete internship</button>
 
-        <div>
-            Clicked: {{ counter$ | async }} times
-            <button type="button" (click)="actions.saveInternship(selectedInternship)">+</button>
-            <button type="button" (click)="actions.deleteInternship(selectedInternship._id)">-</button>
-
-            <button type="button" (click)="counterActions.increment()">+</button>
-            <button type="button" (click)="counterActions.decrement()">-</button>
-            {{internships$ | async}}
-            Clicked: {{ counter$ | async }} times
-
-<!--
-            <div *ngFor="let intern of internships$ | async">
-                {{intern.initials}}
-            </div>
--->
+        <div *ngIf="fetching$ | async" class="alert alert-info">
+            Calling webservice. Please wait..
         </div>
       </div>
     </div>
@@ -167,59 +157,61 @@ import { IAppState } from './store';
 export class InternshipEntryComponent implements OnInit {
     private selectedInternship: Internship;
     private errorMessage: string;
-    // private counter$: Observable<number>;
-
-    
-    @select('counter') counter$: Observable<number>;
+    private message$: Observable<string>;
+    private fetching$: Observable<Boolean>;
+    private selectedInternship$: Observable<Internship>;
   
-
     ngOnInit():void {
+        this.message$ = this.ngRedux.select(state => state.internships.message); //selecting a specific part of the state
+        this.fetching$ = this.ngRedux.select(state => state.internships.isFetching); //selecting a specific part of the state
+        this.selectedInternship$ = this.ngRedux.select(state => state.internships.selectedInternship);
+
         this.route.params.forEach((params: Params) => {
             let id = params['id'];
-            this.selectedInternship = Object.assign({}, this.internshipsService.getInternship(id));
+            this.actions.getInternship(id);
         });
-        
-        //this.counter$ = this.ngRedux.select('counter'); 
 
-        // this.actions.getInternships();
-
-
-    // Exercise the flow where you set a member on change manually instead of
-        // using async pipe.
-        // this.internships$.subscribe(state => {
-        //     this.internships = state;
-        //     console.log(this.internships);
-        // });
-
-        // console.log("in component:");
-        // console.log(this.internships);
+        this.selectedInternship$.subscribe(internship => {
+            this.selectedInternship = internship;
+        });
     }
 
     deleteInternship(): void {
-        this.internshipsService.deleteInternships(this.selectedInternship._id).subscribe(
-            (internship)  => this.router.navigate(['/internships']),
-            error =>  this.errorMessage = <any>error);
-            
+        this.actions.deleteInternship(this.selectedInternship._id);
+
+        // this.internshipsService.deleteInternship(this.selectedInternship._id).subscribe(
+        //     (internship)  => this.router.navigate(['/internships']),
+        //     error =>  this.errorMessage = <any>error);    
     }
 
   constructor(private route: ActivatedRoute, private internshipsService: InternshipsService,
-    private router: Router, public actions: InternshipActions, public counterActions: CounterActions,
+    private router: Router, public actions: InternshipActions,
     private ngRedux: NgRedux<IAppState>) { //
 
         // this.internships = store.select(state => state.internships);
   }
 
   public onSubmit():void {
-    if (this.selectedInternship._id) { //edit 
-        this.internshipsService.updateInternship(this.selectedInternship).subscribe(
-            ()  => this.router.navigate(['/internships']),
-            error =>  this.errorMessage = <any>error);
+    if (this.selectedInternship._id) { //update 
+        console.log("update" + this.selectedInternship._id);
+        this.actions.updateInternship(this.selectedInternship)
+        
+    }else {
+        console.log("create" + this.selectedInternship._id);
+        this.actions.createInternship(this.selectedInternship);
     }
-    else {
-        this.selectedInternship.customerId = '1';
-        this.internshipsService.createInternship(this.selectedInternship).subscribe(
-            ()  => this.router.navigate(['/internships']),
-            error =>  this.errorMessage = <any>error);
-    }
+    this.router.navigate(['/internships']); //not waiting on response from web service.
+
+    // if (this.selectedInternship._id) { //edit 
+    //     this.internshipsService.updateInternship(this.selectedInternship).subscribe(
+    //         ()  => this.router.navigate(['/internships']),
+    //         error =>  this.errorMessage = <any>error);
+    // }
+    // else {
+    //     this.selectedInternship.customerId = '1';
+    //     this.internshipsService.createInternship(this.selectedInternship).subscribe(
+    //         ()  => this.router.navigate(['/internships']),
+    //         error =>  this.errorMessage = <any>error);
+    // }
   }
 }

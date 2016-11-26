@@ -8,16 +8,11 @@ import {Internship} from './internship.entity';
 
 @Injectable()
 export class InternshipsService {
-    //private internships: Internship[];
     private url: string = "http://angular2api2.azurewebsites.net/api/internships";
 
     constructor(private http: Http) {
     }
 
-    // public getAllLocalInternships(): Internship[] {
-    //     return this.internships;
-    // }
-    
     public getAllInternships() {
         console.log("service is calling ws");
         return this.http.get(this.url).toPromise();
@@ -38,35 +33,37 @@ export class InternshipsService {
         return <Internship>{ student: {}}; // return "empty" internship obj.
     } 
 
-    public createInternship(internship): Observable<Internship>  {
+    public saveInternship(internship: Internship) {
         let options = this.getOptionsObj();
         
-        return this.http.post(this.url, internship, options)
-        .map((res: Response) => {
-            let createdInternship = res.json();
-            //this.internships.push(createdInternship);
-        })
-        .catch(this.handleError);
+        if (internship._id) {
+            // console.log("From service: updating");
+            return this.http.put(this.url + "/" + internship._id, internship, options).toPromise();
+        }
+        // console.log("From service: creating");
+        internship.customerId = '1';
+        return this.http.post(this.url, internship, options).toPromise();
     }
-    public updateInternship(internship): Observable<string> {
-        let options = this.getOptionsObj();
+
+    // public updateInternship(internship): Observable<string> {
+    //     let options = this.getOptionsObj();
         
-        return this.http.put(this.url + "/" + internship._id, internship, options)
-        .map((res: Response) => {
-            // let index = this.find(internship._id);
-            //this.internships[index] = internship;
-        })
-        .catch(this.handleError);
-    }
-    public deleteInternships(id: string): Observable<string> {
+    //     return this.http.put(this.url + "/" + internship._id, internship, options)
+    //     .map((res: Response) => {
+    //         // let index = this.find(internship._id);
+    //         //this.internships[index] = internship;
+    //     })
+    //     .catch(this.handleError);
+    // }
+    public deleteInternship(id: string) {
         let options = this.getOptionsObj();
 
-        return this.http.delete(this.url + "/" + id, options)
-        .map((res: Response) => {
-            // let index = this.find(id);
-            //this.internships.splice(index, 1);
-        })
-        .catch(this.handleError);
+        return this.http.delete(this.url + "/" + id, options).toPromise();
+        // .map((res: Response) => {
+        //     // let index = this.find(id);
+        //     //this.internships.splice(index, 1);
+        // })
+        // .catch(this.handleError);
     }
 
     // private find(id: string): number {

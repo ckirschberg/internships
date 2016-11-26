@@ -44,16 +44,16 @@ describe('InternshipsService', () => {
             new ResponseOptions({
                 body: [
                   {
-                    _id: '11', 
-                    initials: 'chrk', 
-                    date: '2016-01-02', 
-                    student: { 
-                        firstname: 'Per', 
+                    _id: '11',
+                    initials: 'chrk',
+                    date: '2016-01-02',
+                    student: {
+                        firstname: 'Per',
                         lastname: 'Hansen'
-                    }, 
-                    companyName: 'Vestas', 
-                    customerId: '1' 
-                  } 
+                    },
+                    companyName: 'Vestas',
+                    customerId: '1'
+                  }
                 ]
               }
             )));
@@ -73,6 +73,6 @@ describe('InternshipsService', () => {
         });
     });
 
-    
+
     });
 });

@@ -4,6 +4,9 @@ import { HomeComponent } from './home.component';
 import { InternshipsComponent } from './internships.component';
 import { InternshipEntryComponent } from './internship-entry.component';
 import { AboutComponent } from './about.component';
+import { InternshipsContainerComponent } from './internships-container.component';
+
+
 
 const routes: Routes = [{
     path: '',
@@ -20,7 +23,7 @@ const routes: Routes = [{
   },
   {
     path: 'internships',
-    component: InternshipsComponent,
+    component: InternshipsContainerComponent,
   },
   { //new internships
     path: 'internship',

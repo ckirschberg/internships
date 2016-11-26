@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
-import { NgRedux, DevToolsExtension } from 'ng2-redux';
-import { IAppState, rootReducer, enhancers } from './store/index';
-const createLogger = require('redux-logger');
-
+import { Component, OnInit } from '@angular/core';
+import { NgRedux } from 'ng2-redux';
+import { InternshipActions } from './actions/internship.actions';
+import { Internship } from './internship.entity';
+import { NgReduxRouterModule, NgReduxRouter } from 'ng2-redux-router';
 
 @Component({
   selector: 'app-root',
@@ -20,17 +20,8 @@ const createLogger = require('redux-logger');
   </div>
 `
 })
-export class AppComponent {
-  
-  // Initialize redux in root component
-  constructor(
-    private ngRedux: NgRedux<IAppState>,
-      private devTool: DevToolsExtension) {
-
-      this.ngRedux.configureStore(
-        rootReducer,
-        {},
-        [ createLogger() ],
-        [ ...enhancers, devTool.isEnabled() ? devTool.enhancer() : f => f]);
+export class AppComponent{
+  constructor() {
+    
   }
 }

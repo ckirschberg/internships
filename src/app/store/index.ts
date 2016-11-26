@@ -4,12 +4,14 @@ import { combineReducers } from 'redux';
 // import { IPathDemoData, pathDemoReducer } from './path-demo.reducer';
 // import { ISearchState, searchReducer } from './search.reducer';
 import { Internship } from '../internship.entity';
-import { counterReducer } from './counter.reducer';
 import { internshipReducer } from './internship.reducer';
+import { routerReducer } from 'ng2-redux-router';
 
 export class InternshipState {
     internships: Internship[];
+    selectedInternship: Internship;
     isFetching: boolean;
+    message: string;
 };
 
 export class IAppState {
@@ -20,10 +22,11 @@ export class IAppState {
 };
 
 export const rootReducer = combineReducers<IAppState>({
-   counter: counterReducer,
-   internships: internshipReducer
+   internships: internshipReducer,
 //   pathDemo: pathDemoReducer,
 //   search: searchReducer
+
+   router: routerReducer
 });
 
 export const enhancers = [
