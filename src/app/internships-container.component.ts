@@ -56,8 +56,8 @@ export class InternshipsContainerComponent {
         this.fetching$ = this.ngRedux.select(state => state.internships.isFetching); //selecting a specific part of the state
         this.message$ = this.ngRedux.select(state => state.internships.message); //selecting a specific part of the state
 
-        this.actions.getInternships();
-  }
+        // this.actions.getInternships();
+    }
 
     gotoDetails(id) {
         console.log(id);

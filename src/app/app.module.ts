@@ -38,7 +38,7 @@ import { Observable } from 'rxjs/Observable';
     AboutComponent,
     /*FilterInternships*/
   ],
-  providers: [InternshipsService, InternshipActions],
+  providers: [InternshipsService, InternshipActions, DevToolsExtension],
   bootstrap: [AppComponent]
 })
 export class AppModule {

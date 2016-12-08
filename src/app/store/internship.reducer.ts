@@ -23,7 +23,8 @@ function find(id: string, state: Internship[]): number {
 export function internshipReducer(state: InternshipState = INITIAL_STATE, action:any) {
   switch (action.type) {
     case InternshipActions.SET_ISFETCHING:
-      return Object.assign({}, state, { isFetching: true })
+      return state;
+      // return Object.assign({}, state, { isFetching: true })
       
     case InternshipActions.RECEIVED_INTERNSHIPS_FROM_WS:
       let myInternships = action.payload.json().filter(item => item.customerId === '1');
@@ -55,14 +56,17 @@ export function internshipReducer(state: InternshipState = INITIAL_STATE, action
         message: "There was an error saving the internship to the server. Please try again." })
 
     case InternshipActions.HANDLE_DELETED_INTERNSHIP:  //action.payload has index?
-      let internships = state.internships.slice(0, +action.payload).concat(state.internships.slice((+action.payload) +1));
+      let internships = state.internships.filter(internship => internship._id !== action.payload.id);
       return Object.assign({}, state, { isFetching: false, internships: internships });
 
-    
     case InternshipActions.HANDLE_UPDATED_INTERNSHIP:
+      
       return Object.assign({}, state); 
       
-    
+    case InternshipActions.FAILED_DELETED_INTERNSHIP:
+      return Object.assign({}, state, { isFetching: false, 
+        message: "There was an error deleting the internship from the server. Please try again." })
+
     case InternshipActions.FAILED_UPDATED_INTERNSHIP:
       return Object.assign({}, state, { isFetching: false, 
         message: "There was an error saving the internship to the server. Please try again." })

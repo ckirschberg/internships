@@ -178,6 +178,7 @@ export class InternshipEntryComponent implements OnInit {
 
     deleteInternship(): void {
         this.actions.deleteInternship(this.selectedInternship._id);
+        this.router.navigate(['/internships']); //not waiting on response from web service.
 
         // this.internshipsService.deleteInternship(this.selectedInternship._id).subscribe(
         //     (internship)  => this.router.navigate(['/internships']),

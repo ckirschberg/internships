@@ -21,7 +21,7 @@ import { NgReduxRouterModule, NgReduxRouter } from 'ng2-redux-router';
 `
 })
 export class AppComponent{
-  constructor() {
-    
+  constructor(public actions: InternshipActions) {
+    this.actions.getInternships();
   }
 }
