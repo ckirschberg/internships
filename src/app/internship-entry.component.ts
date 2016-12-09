@@ -194,14 +194,16 @@ export class InternshipEntryComponent implements OnInit {
 
   public onSubmit():void {
     if (this.selectedInternship._id) { //update 
-        console.log("update" + this.selectedInternship._id);
+        // console.log("update" + this.selectedInternship._id);
         this.actions.updateInternship(this.selectedInternship)
         
     }else {
-        console.log("create" + this.selectedInternship._id);
+        // console.log("create" + this.selectedInternship._id);
         this.actions.createInternship(this.selectedInternship);
     }
     this.router.navigate(['/internships']); //not waiting on response from web service.
+
+
 
     // if (this.selectedInternship._id) { //edit 
     //     this.internshipsService.updateInternship(this.selectedInternship).subscribe(
