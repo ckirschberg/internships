@@ -23,12 +23,14 @@ export class InternshipActions {
   static FAILED_UPDATED_INTERNSHIP: string = 'FAILED_UPDATED_INTERNSHIP';
 
   static GET_INTERNSHIP: string = 'GET_INTERNSHIP';  
-  // static GET_LOCAL_INTERNSHIPS: string = 'GET_LOCAL_INTERNSHIPS';  
 
   static HANDLE_DELETED_INTERNSHIP: string = 'HANDLE_DELETED_INTERNSHIP';
   static FAILED_DELETED_INTERNSHIP: string = 'FAILED_DELETED_INTERNSHIP';
   
 
+  getInternship(id: string): void {
+    this.ngRedux.dispatch({ type: InternshipActions.GET_INTERNSHIP, payload: id });
+  }
   getInternships(): void {
     this.ngRedux.dispatch({ type: InternshipActions.SET_ISFETCHING }); //sets isFetching flag
 
@@ -46,9 +48,8 @@ export class InternshipActions {
           })}
         );   
   }
-  // getLocalInternships(): void {
-  //   this.ngRedux.dispatch({ type: InternshipActions.GET_LOCAL_INTERNSHIPS });  
-  // }
+  
+
 
   createInternship(internship: Internship): void {
     this.ngRedux.dispatch({ type: InternshipActions.SET_ISFETCHING, payload: internship });
@@ -72,7 +73,7 @@ export class InternshipActions {
     this.internshipsService.saveInternship(internship).then((response: Response) => {
         this.ngRedux.dispatch({
           type: InternshipActions.HANDLE_UPDATED_INTERNSHIP,
-          payload: response
+          payload: internship
         })})
         .catch((error) => {
           this.ngRedux.dispatch({ 
@@ -82,12 +83,6 @@ export class InternshipActions {
         );
   }
 
-
-  
-  
-  getInternship(id: string): void {
-    this.ngRedux.dispatch({ type: InternshipActions.GET_INTERNSHIP, payload: id });
-  }
   
   deleteInternship(id: string): void {
     this.ngRedux.dispatch({ type: InternshipActions.SET_ISFETCHING });
